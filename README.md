@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGZtbzZud3lyNXhkOWFzMGp3ZTRudTgzbjcxeHFtd2drc3F3NWQwaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L1R1tvI9svkVDsPEvq/giphy.gif" alt="3D Architecture GIF" width="300"/>
+  <img src="https://media.giphy.com/media/qgQUggAC3Pfv687qPC/giphy.gif" alt="Coding GIF" width="300"/>
   <h1>Wobb Vibe Coder Assignment 🚀</h1>
   <p><strong>Developed with ❤️ by Soumoditya Das</strong></p>
 </div>
@@ -17,7 +17,7 @@ I'm **Soumoditya Das**, and I'm thrilled to present my solution for the **Vibe C
 I designed the architecture to be highly scalable, responsive, and decoupled. Here's a structural breakdown of the system:
 
 ```mermaid
-graph TD;
+graph TD
     subgraph UILayer [UI Layer]
       A[SearchPage] --> B(PlatformFilter)
       A --> C(ProfileList)
@@ -28,16 +28,16 @@ graph TD;
     
     subgraph GlobalState [Global State Management]
       H[(Zustand Store)]
-      H --> |State: platform, searchQuery, sortBy| A
-      H --> |State: selectedProfiles| D
-      H --> |Actions: addProfile, removeProfile| E
-      H -.-> |Persist| I(Local Storage)
+      H -->|State: platform, searchQuery, sortBy| A
+      H -->|State: selectedProfiles| D
+      H -->|Actions: addProfile, removeProfile| E
+      H -.->|Persist| I[(Local Storage)]
     end
     
     subgraph Utilities [Utilities & Data]
-      J[dataHelpers.ts] --> |Extracts/Filters/Sorts| A
-      K[profileLoader.ts] --> |Dynamic JSON Import| E
-      L[Tailwind v4 / CSS] -.-> |Styles| UILayer
+      J[dataHelpers.ts] -->|Extracts/Filters/Sorts| A
+      K[profileLoader.ts] -->|Dynamic JSON Import| E
+      L[Tailwind v4 / CSS] -.->|Styles| A
     end
 ```
 
