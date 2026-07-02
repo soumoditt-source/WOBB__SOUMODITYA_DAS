@@ -18,7 +18,7 @@ I designed the architecture to be highly scalable, responsive, and decoupled. He
 
 ```mermaid
 graph TD;
-    subgraph UI Layer
+    subgraph UILayer [UI Layer]
       A[SearchPage] --> B(PlatformFilter)
       A --> C(ProfileList)
       C --> D(ProfileCard)
@@ -26,7 +26,7 @@ graph TD;
       E --> G(VerifiedBadge)
     end
     
-    subgraph Global State Management
+    subgraph GlobalState [Global State Management]
       H[(Zustand Store)]
       H --> |State: platform, searchQuery, sortBy| A
       H --> |State: selectedProfiles| D
@@ -34,10 +34,10 @@ graph TD;
       H -.-> |Persist| I(Local Storage)
     end
     
-    subgraph Utilities & Data
+    subgraph Utilities [Utilities & Data]
       J[dataHelpers.ts] --> |Extracts/Filters/Sorts| A
       K[profileLoader.ts] --> |Dynamic JSON Import| E
-      L[Tailwind v4 / CSS] -.-> |Styles| UI Layer
+      L[Tailwind v4 / CSS] -.-> |Styles| UILayer
     end
 ```
 
