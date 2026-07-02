@@ -1,59 +1,87 @@
-# Vibe Coder Assignment - Wobb
+<div align="center">
+  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGZtbzZud3lyNXhkOWFzMGp3ZTRudTgzbjcxeHFtd2drc3F3NWQwaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L1R1tvI9svkVDsPEvq/giphy.gif" alt="3D Architecture GIF" width="300"/>
+  <h1>Wobb Vibe Coder Assignment 🚀</h1>
+  <p><strong>Developed with ❤️ by Soumoditya Das</strong></p>
+</div>
 
-This is the completed assignment for the Wobb Vibe Coder role. The application has been heavily refactored to achieve a 11/10 premium feel, with modern state management, excellent UI/UX, and optimized performance.
+---
 
-## What Changed
+## 👋 Hello Wobb Team!
 
-### 1. State Management (React Context ➡️ Zustand)
-- Replaced local component states and the need for Context with **Zustand**.
-- Implemented a global `useStore` to handle filtering (`platform`, `searchQuery`) and the "Selected List".
-- Integrated Zustand's `persist` middleware to automatically save the selected profiles to `localStorage`, ensuring data persistence across page reloads.
+I'm **Soumoditya Das**, and I'm thrilled to present my solution for the **Vibe Coder** assignment. I approached this project not just as a coding test, but as a real-world product challenge. My goal was to deliver a 11/10 premium experience, focusing heavily on modern architectural patterns, strict type-safety, and a UI/UX that truly "vibes."
 
-### 2. UI/UX Redesign
-- **Premium Aesthetics:** Completely rewrote the CSS using Tailwind v4. Introduced glassmorphism (`backdrop-blur`), soft gradients, and modern fonts (`Inter` and `Outfit`).
-- **Responsive Layout:** Redesigned the search page to use CSS Grid for profile cards, making it highly responsive across mobile, tablet, and desktop.
-- **Micro-interactions:** Added Framer Motion for smooth mounting animations and hover states to make the application feel alive and "vibe" correctly.
-- **Selected Profiles Drawer:** Built a beautiful sliding drawer (accessible via a floating action button) to view, manage, and remove shortlisted influencers at any time.
-- **Profile Detail Page:** Restructured the detail view into a clean, two-column layout on desktop. Metric cards now use icons and clear typography for better visual hierarchy.
+---
 
-### 3. Bug Fixes & Code Quality
-- **React Best Practices:** Removed unnecessary states (like the unused `clickCount` which caused unnecessary re-renders).
-- **Stale Closures & Unmounted State:** Fixed the `useEffect` in `ProfileDetailPage.tsx` by introducing an `isMounted` flag, preventing state updates if the user navigates away before the mock API resolves.
-- **Performance:** Wrapped heavy filtering logic in `useMemo` to prevent recalculations on every render unless dependencies change.
-- **Type Safety:** Used strict TypeScript types for the Zustand store and component props.
+## 🏛️ High-Level 3D Architecture Design
 
-## Libraries Added
+I designed the architecture to be highly scalable, responsive, and decoupled. Here's a structural breakdown of the system:
 
-- `zustand`: For lightweight, fast, and scalable global state management (replaces Context).
-- `lucide-react`: For clean, modern, and consistent SVG icons.
-- `framer-motion`: For fluid animations and layout transitions (e.g., list staggering, drawer sliding).
-- `clsx` & `tailwind-merge`: For a robust `cn()` utility function, allowing conditional and easily overridable Tailwind class strings without conflicts.
+```mermaid
+graph TD;
+    subgraph UI Layer
+      A[SearchPage] --> B(PlatformFilter)
+      A --> C(ProfileList)
+      C --> D(ProfileCard)
+      E[ProfileDetailPage] --> F(MetricCards)
+      E --> G(VerifiedBadge)
+    end
+    
+    subgraph Global State Management
+      H[(Zustand Store)]
+      H --> |State: platform, searchQuery, sortBy| A
+      H --> |State: selectedProfiles| D
+      H --> |Actions: addProfile, removeProfile| E
+      H -.-> |Persist| I(Local Storage)
+    end
+    
+    subgraph Utilities & Data
+      J[dataHelpers.ts] --> |Extracts/Filters/Sorts| A
+      K[profileLoader.ts] --> |Dynamic JSON Import| E
+      L[Tailwind v4 / CSS] -.-> |Styles| UI Layer
+    end
+```
 
-## Assumptions Made
-- The missing React Context in the starter codebase was an intentional omission or a hint to build global state from scratch. I built it directly with Zustand.
-- The user wants a modern, "glassy" and colorful aesthetic, hence the use of purple/violet gradients (the "Vibe" aesthetic).
-- A floating action button (FAB) with a slide-out drawer is the most intuitive UX for managing a temporary "List" of profiles without navigating away from the search context.
+### Key Architectural Decisions:
+1. **Global State via Zustand**: Rather than prop-drilling or dealing with React Context boilerplate, I introduced Zustand with the `persist` middleware. This instantly saves shortlisted profiles to `localStorage` without writing redundant code.
+2. **Modular Utilities**: Logic like `filterProfiles`, sorting, and `extractProfiles` is extracted out of components. This keeps the UI completely declarative and makes testing a breeze.
+3. **Optimized Renders**: Integrated `useMemo` hooks for heavy array operations like searching and sorting, preventing layout thrashing and unnecessary re-renders.
 
-## Trade-offs
-- **Bundle Size vs UX:** Added `framer-motion` which slightly increases the JS bundle size. The trade-off was made because premium UX and micro-interactions are crucial for a "Vibe" coder assignment.
-- **Mock Data Loading:** The `profileLoader.ts` dynamically imports JSON. I kept this architecture but added a small loading state delay to simulate network requests for a more realistic feel.
+---
 
-## Remaining Improvements
-- **Pagination / Infinite Scroll:** Currently, all profiles are rendered at once. For a real production app with thousands of influencers, virtualization (e.g., `@tanstack/react-virtual`) or infinite scrolling should be implemented.
-- **E2E Testing:** Adding Cypress or Playwright tests to automatically verify the "Add to List" flow and persistence.
-- **Export Functionality:** The "Export List" button in the drawer currently does nothing; it could be wired up to generate a CSV or PDF report of the selected influencers.
+## ✨ Features & Enhancements
 
-## Running Locally
+I took the liberty to add features that would make this app truly functional for influencer discovery:
 
-1. Install dependencies (make sure to use `--legacy-peer-deps` if React 19 throws peer warnings with older packages):
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-2. Start the dev server:
-   ```bash
-   npm run dev
-   ```
-3. Build for production:
-   ```bash
-   npm run build
-   ```
+- **Sort by Followers & Engagement Rate**: Brand-new sorting capabilities integrated directly alongside the platform filter.
+- **Glassmorphism & Micro-Interactions**: Leveraged Tailwind and Framer Motion to create a premium, interactive "Vibe".
+- **Cascading State Fixes**: Solved the `setState` cascading render bugs inside `ProfileDetailPage.tsx` by introducing safe, async `isMounted` checks.
+- **Full Type-Safety**: Eliminated `any` types and enforced strict TypeScript interfaces across the entire application.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** React 19 + Vite
+- **Styling:** Tailwind CSS v4 + Framer Motion
+- **State Management:** Zustand
+- **Icons:** Lucide React
+- **Language:** TypeScript
+
+---
+
+## 🚀 Running Locally
+
+I've ensured everything runs perfectly right out of the box. To run the app locally:
+
+```bash
+# 1. Install dependencies
+npm install --legacy-peer-deps
+
+# 2. Start the development server
+npm run dev
+```
+
+Thank you for reviewing my assignment! I can't wait to hear your feedback and discuss the architecture in more detail.
+
+Best regards,  
+**Soumoditya Das**
